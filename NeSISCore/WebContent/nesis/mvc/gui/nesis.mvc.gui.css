@@ -1,0 +1,112 @@
+/*Tab Structure*/
+.mvc-tabs{}
+.mvc-tab-list{
+	list-style-type:none;
+	height:35px;
+	margin:0;
+	padding:0;
+}
+.mvc-tab-list>li{
+	float:left;
+	margin-right:3px;
+}
+.mvc-tab-list>li>a{
+	display:block;
+	background-color:silver;
+	padding:5px 15px;
+	border-top-left-radius:9px;
+	border-top-right-radius:9px;
+	color:#fff;
+	text-decoration:none;
+}
+.mvc-tab-list>li>a.active{
+	background-color:#fff;
+	color:silver;
+	border:1px solid silver;
+	border-bottom:none;
+}
+.mvc-tab-content{
+	margin:10px;
+}
+
+/*Accordian Structure*/
+.mvc-accordian{
+	
+}
+.mvc-accordian-actuator{
+	background-color:#ddd;
+}
+.mvc-accordian-actuator a{
+	display:block;
+	padding:5px 30px;
+	color:#fff;
+	text-decoration:none;
+	font-size:.9em;
+}
+.mvc-accordian-content{
+	
+}
+
+/*Edittable Content*/
+*[contenteditable="true"]{
+	cursor:pointer;
+}
+*[contenteditable="true"]:after{
+	content:"\0020\0020\270D";
+}
+*[contenteditable="true"]:focus{
+	background-color:#fff;
+	border:1px dotted #ddd;
+	height:1em;
+}
+*[contenteditable="true"]:focus:after{content:"";}
+
+
+/*Lightbox*/
+.mvc-lightbox-shadow{
+	position:absolute;
+	width:100%;
+	height:100%;
+	background-color:#000;
+	opacity:.5;
+}
+.mvc-lightbox-close{
+	position:relative;
+	height:30px;
+	width:30px;
+	display:block;
+	border:3px solid #000;
+	border:6px solid #fff;
+	background-color:#fff;
+	background-color:#000;
+	border-radius:30px;
+	margin:-24px -24px auto auto;
+	box-shadow:0 0 2px;	
+}
+.mvc-lightbox-window{
+	position:absolute;
+	width:80%;
+	height:80%;
+	top:10%;
+	left:10%;
+	border:12px solid #ddd;
+	border:12px solid #333;
+	border-radius:12px;
+	margin:auto;
+	
+	background-color:#fff;
+	box-shadow:6px 6px 3px;	
+}
+.mvc-lightbox-close a{
+	padding:5px 6px;
+	color:#fff;
+	cursor:pointer;
+}
+.mvc-lightbox-close a:after{
+	content:"\2716";
+	font-weight:900;
+	font-size:20px;
+}
+.mvc-lightbox-content{
+	margin:10px;
+}
