@@ -10,7 +10,7 @@ nesis.mvc.gui.tabsAjax = function(e){
 			content.id = href.slice(1,-1);
 		};
 	
-	frag.parentNode.childNodes.each(function(){
+	frag.parent().children().each(function(){
 		if(this.attr('type') == 'Controller'){
 			a = document.createElement('a'),id=this.attr('id');
 			a.href = '#' + this.attr('path') + '/';			

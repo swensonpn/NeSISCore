@@ -106,12 +106,13 @@ else{
 <script type="text/javascript" src="nesis/mvc/gui/nesis.mvc.gui.textEditableAjax-1.0.js"></script>
 <script type="text/javascript" src="nesis/mvc/gui/nesis.mvc.gui.lightbox-1.0.js"></script>
 <script type="text/javascript" src="nesis/mvc/gui/nesis.mvc.gui.tabsStatic-1.0.js"></script>
-<script type="text/javascript" src="nesis/mvc/nesis.mvc.collection-1.0.js"></script>
 <script type="text/javascript" src="nesis/mvc/nesis.mvc.event-1.0.js"></script>
-<script type="text/javascript" src="nesis/mvc/nesis.mvc.baseobject-1.0.js"></script>
+<script type="text/javascript" src="nesis/mvc/nesis.mvc.nodecollection-1.0.js"></script>
+<script type="text/javascript" src="nesis/mvc/nesis.mvc.node-1.0.js"></script>
+<script type="text/javascript" src="nesis/mvc/nesis.mvc.controller-1.0.js"></script>
 <script type="text/javascript" src="nesis/mvc/nesis.mvc.application-1.0.js"></script>
 <script type="text/javascript" src="nesis/mvc/nesis.mvc.router-1.0.js"></script>
-<script type="text/javascript" src="nesis/mvc/nesis.mvc.controller-1.0.js"></script>
+
 <script type="text/javascript" src="nesis/mvc/nesis.mvc.model-1.0.js"></script>
 <script type="text/javascript" src="nesis/mvc/nesis.mvc.view-1.0.js"></script>
 <?php 

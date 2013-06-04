@@ -1,15 +1,9 @@
-nesis.mvc.Event = function(eventType){
-	if(eventType !== 'MVC') return document.createEvent(eventType);
+nesis.mvc.Event = function(eventType,data){
+	if(!eventType || typeof eventType != 'string') return false;
+	data = data || {};
 	
-	this.initEvent = function(){
-		var a=arguments;
-		this.type = a[0];
-		this.bubbles = a[1] || true;
-		this.cancelable = a[2] || true;	
-		this.arguments = new Array();
-		if(a[3])
-			for(var i=0, l=a[3].length; i<l; i++){
-				this.arguments.push(a[3][i]);
-			}
-	};	
+	this.type = eventType;
+	this.bubbles = data.bubbles || true;
+	this.cancelable = data.cancelable || true;	
+	this.arguments = data.arguments;
 };

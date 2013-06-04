@@ -21,7 +21,7 @@ nesis.mvc.gui.formAjax = function(e){
 				if(n) obj[n] = inputs[i].value;
 			}
 			//controller.model().save(arr.join('&'));
-			frag.parentNode.model().save(obj);
+			frag.parent().model().save(obj);
 		},true);
 	}
 };

@@ -33,7 +33,7 @@ app.controller('tabs',{
 		label:'Static Controls',
 		defaultNode:true
 	})
-	.attr('parentNode')
+	.parent()
 	.controller('edittable',{
 		model:{
 			contentType:'text/html',
@@ -47,7 +47,7 @@ app.controller('tabs',{
 		},
 		label:'Ajax Editable Content'
 	})
-	.attr('parentNode')
+	.parent()
 	.controller('ajaxForm',{
 		model:{
 			contentType:'text/html',		
@@ -61,7 +61,7 @@ app.controller('tabs',{
 		},
 		label:'Ajax Form'
 	})
-	.attr('parentNode')
+	.parent()
 	.controller('pslinks',{		
 		label:'Modal Windows',
 		model:{
@@ -101,5 +101,5 @@ app.controller('lightbox',{
 		}
 	});
 
-console.log(app.router());
+//console.log(app.router());
 app.execute('abc','def','ghi');

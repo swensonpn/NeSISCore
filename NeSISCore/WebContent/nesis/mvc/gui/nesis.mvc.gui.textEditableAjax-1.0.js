@@ -8,7 +8,7 @@ nesis.mvc.gui.textEditableAjax = function(e){
 					if(orig != this.innerHTML){
 						var obj = {};
 						obj[this.id] = this.innerHTML.replace(/(<([^>]+)>)/ig,"");
-						frag.parentNode.model().save(obj);
+						frag.parent().model().save(obj);
 					}
 				};
 			
