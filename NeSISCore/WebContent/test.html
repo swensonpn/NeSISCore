@@ -1,0 +1,235 @@
+<html>
+<body>
+<div id="app/lightbox"></div>
+<div id="app"></div>
+<script type="text/javascript" src="nesis/nesis.js"></script>
+<script type="text/javascript" src="nesis/core/nesis.core.error-1.0.js"></script>
+<script type="text/javascript" src="nesis/core/nesis.core.browser-1.0.js"></script>
+<script type="text/javascript" src="nesis/core/nesis.core.cache-1.0.js"></script>
+<script type="text/javascript" src="nesis/core/nesis.core.store-1.0.js"></script>
+<!-- <script type="text/javascript" src="nesis/core/nesis.core.template-1.0.js"></script>-->
+<script type="text/javascript" src="nesis/net/nesis.net.http-1.0.js"></script>
+<script type="text/javascript" src="nesis/mvc/nesis.mvc-1.0.js"></script>
+<script type="text/javascript" src="nesis/mvc/gui/nesis.mvc.gui.tabsAjax-1.0.js"></script>
+<script type="text/javascript" src="nesis/mvc/gui/nesis.mvc.gui.accordianStatic-1.0.js"></script>
+<script type="text/javascript" src="nesis/mvc/gui/nesis.mvc.gui.formAjax-1.0.js"></script>
+<script type="text/javascript" src="nesis/mvc/gui/nesis.mvc.gui.textEditableAjax-1.0.js"></script>
+<script type="text/javascript" src="nesis/mvc/gui/nesis.mvc.gui.lightbox-1.0.js"></script>
+<script type="text/javascript" src="nesis/mvc/gui/nesis.mvc.gui.tabsStatic-1.0.js"></script>
+<script type="text/javascript" src="nesis/mvc/datasource/nesis.mvc.datasource.dom-1.0.js"></script>
+<script type="text/javascript" src="nesis/mvc/nesis.mvc.event-1.0.js"></script>
+<script type="text/javascript" src="nesis/mvc/nesis.mvc.nodecollection-1.0.js"></script>
+<script type="text/javascript" src="nesis/mvc/nesis.mvc.node-1.0.js"></script>
+<script type="text/javascript" src="nesis/mvc/nesis.mvc.router-1.0.js"></script>
+<script type="text/javascript" src="nesis/mvc/nesis.mvc.controller-1.0.js"></script>
+<script type="text/javascript" src="nesis/mvc/nesis.mvc.application-1.0.js"></script>
+<script type="text/javascript" src="nesis/mvc/nesis.mvc.model-1.0.js"></script>
+<script type="text/javascript" src="nesis/mvc/nesis.mvc.view-1.0.js"></script>
+<script type="text/javascript" src="nesis/mvc/nesis.mvc.template-1.0.js"></script>
+
+
+<!-- <script type="text/javascript">var nesis = {core:{},mvc:{debugEventBind:true,debugEventFired:true,debugTiming:true}};</script>-->
+
+
+<script type="text/javascript">
+/*
+var obj={
+		datasource:function(o){
+			o.data = 'Hello World';
+			return o;
+		}
+}
+
+var cache = new nesis.core.cache({l1Max:2});
+cache.set('hello',obj);
+cache.set('hello1',obj);
+cache.set('hello2',obj);
+cache.set('hello3',obj);
+cache.set('hello4',obj);
+cache.set('hello5',obj);
+cache.set('hello6',obj);
+cache.set('hello7',obj);
+cache.set('hello8',obj);
+cache.set('hello9',obj);
+
+console.log(cache.toString());
+setTimeout(function(){console.log(cache.toString());}, 10000);
+*/
+
+
+
+
+
+
+var app = new nesis.mvc.Application({	
+	model:{
+		contentType:'text/html',
+		data:'<div id="app/tabs"></div>',
+	}	
+});
+
+app.controller('tabs',{
+		model:{
+			contentType:'text/html',
+			data:'<div class="mvc-tabs"><ul class="mvc-tab-list"></ul><div class="mvc-tab-content"></div></div>'
+		},
+		view:{
+			onbeforerender:function(e){
+				nesis.mvc.gui.tabsAjax(e);	
+			}
+		},
+		defaultNode:true
+	})		
+	.controller('static',{
+		model:{
+			contentType:'text/html',
+			expires:'Wed, 23 May 2013 18:47:53 GMT',
+			remoteURL:'http://localhost/NeSISCore/demos/guiControls/static.php'
+		},
+		view:{
+			onbeforerender:function(e){
+				nesis.mvc.gui.tabsStatic(e);
+				nesis.mvc.gui.accordianStatic(e);
+			}
+		},
+		label:'Static Controls'
+	})
+	.parent()
+	.controller('edittable',{
+		model:{
+			contentType:'text/html',
+			expires:'0',
+			remoteURL:'http://localhost/NeSISCore/demos/guiControls/textEditableAjax.php'
+		},
+		view:{
+			onbeforerender:function(e){
+				nesis.mvc.gui.textEditableAjax(e);
+			}
+		},
+		label:'Ajax Editable Content'
+	})
+	.parent()
+	.controller('ajaxForm',{
+		model:{
+			contentType:'text/html',		
+			lastModified:'Wed, 22 May 2013 17:44:03 GMT',
+			remoteURL:'http://localhost/NeSISCore/demos/guiControls/formAjax.php'
+		},
+		view:{
+			onbeforerender:function(e){
+				nesis.mvc.gui.formAjax(e);
+			}
+		},
+		label:'Ajax Form'
+	})
+	.parent()
+	.controller('pslinks',{		
+		label:'Modal Windows',
+		model:{
+			contentType:'text/html',
+			lastModified:'Wed, 22 May 2013 17:44:03 GMT',
+			remoteURL:'http://localhost/NeSISCore/demos/guiControls/psLinkList.php',
+			template:''
+		},
+		view:{
+			onbeforerender:function(e){				
+				var links = e.target.querySelectorAll('.mvc-pslink-list a'),l=links.length;
+				for(; l>0; l--){
+					var i = l-1; 
+					links[i].addEventListener('click',function(e){ 
+						e.preventDefault();
+						var html = '<iframe id="mvc-target-frame" name="mvc-target-frame" src="' + links[i].getAttribute('href') + '"></iframe>';
+						app.controller('lightbox').execute(html);
+							
+					},true);
+				}
+			}
+		}
+	})
+	.parent()
+	.controller('templates',{
+		model:{
+			contentType:'text/json',		
+			lastModified:'Wed, 22 May 2013 17:44:03 GMT',
+			remoteURL:'http://localhost/NeSISCore/demos/guiControls/json.php'
+		},
+		view:{
+			onbeforerender:function(e){
+				//nesis.mvc.gui.formAjax(e);
+			},
+			templates:{
+				'list':{
+					domId:'test',
+					templateType:'javascript'
+				},
+				'default':{
+					domId:'test2',
+					templateType:'javascript'
+				},
+				'remote':{
+					url:'http://localhost/NeSISCore/demos/guiControls/js/listTemplate.js',
+					templateType:'javascript'
+				}  
+			}
+		},
+		label:'JSON Templating',
+		defaultNode:true,
+		debug:true
+	})
+	
+console.log(app.controller('tabs').controller('templates').view().children('id','default').toString());
+
+	
+app.controller('lightbox',{	
+		model:{			
+			contentType:'text/html',
+			data:'<div class="mvc-lightbox"><div class="mvc-lightbox-shadow"></div><div class="mvc-lightbox-window"><span  class="mvc-lightbox-close"><a title="close"></a></span><div class="mvc-lightbox-content"></div></div>'
+		},
+		view:{
+			onbeforerender:function(e){
+				nesis.mvc.gui.lightbox(e);
+			}
+		}
+	});
+
+
+app.execute();
+
+
+
+//console.log(one.toString());
+</script>
+<script type="text/x-template" id="test2">
+	<div id="<%=emplid%>">
+		<table>
+			<thead>
+				<tr>
+					<th>NUID</th>
+					<th>NAME</th>
+					<th>OFFICE</th>
+					<th>EMAIL</th>
+					<th>TITLE</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td><%=name%></td>
+					<td><%=office%></td>
+					<td><%=email%></td>
+					<td><%=title%></td>
+				</tr>
+		</table>
+	</div>
+</script>
+<script type="text/x-template" id="test">
+	<div id="<%=emplid%>">
+		<table>
+			<tr><td>Name:</td><td><%=name%></td></tr>
+			<tr><td>Office:</td><td><%=office%></td></tr>
+			<tr><td>Email:</td><td><%=email%></td></tr>
+			<tr><td>Title:</td><td><%=title%></td></tr>
+		</table>
+	</div>
+</script>
+</body>
+</html>
