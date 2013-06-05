@@ -17,7 +17,7 @@ app.controller('tabs',{
 			}
 		},
 		defaultNode:true
-	})	
+	})		
 	.controller('static',{
 		model:{
 			contentType:'text/html',
@@ -30,8 +30,7 @@ app.controller('tabs',{
 				nesis.mvc.gui.accordianStatic(e);
 			}
 		},
-		label:'Static Controls',
-		defaultNode:true
+		label:'Static Controls'
 	})
 	.parent()
 	.controller('edittable',{
@@ -84,9 +83,39 @@ app.controller('tabs',{
 				}
 			}
 		}
-	});
+	})
+	.parent()
+	.controller('templates',{
+		model:{
+			contentType:'text/json',		
+			lastModified:'Wed, 22 May 2013 17:44:03 GMT',
+			remoteURL:'http://localhost/NeSISCore/demos/guiControls/json.php'
+		},
+		view:{
+			onbeforerender:function(e){
+				//nesis.mvc.gui.formAjax(e);
+			},
+			templates:{
+				'list':{
+					domId:'test',
+					templateType:'javascript'
+				},
+				'default':{
+					domId:'test2',
+					templateType:'javascript'
+				},
+				'remote':{
+					url:'http://localhost/NeSISCore/demos/guiControls/js/listTemplate.js',
+					templateType:'javascript'
+				}  
+			}
+		},
+		label:'JSON Templating',
+		defaultNode:true,
+		debug:true
+	})
 	
-	
+console.log(app.controller('tabs').controller('templates').view().children('id','default').toString());
 
 	
 app.controller('lightbox',{	
@@ -101,5 +130,5 @@ app.controller('lightbox',{
 		}
 	});
 
-//console.log(app.router());
-app.execute('abc','def','ghi');
+
+app.execute();

@@ -1,21 +1,11 @@
 nesis.mvc.View = function(a,x){
-	var ns=nesis.mvc,o=this,model,oNode,frag,
+	var ns=nesis.mvc,o=this,model,oNode,frag,dsFunc,
 		nodeSearch = function(needle,all){
 			var hayStack = frag || oNode;
 			if(all){
 				return hayStack.querySelectorAll(needle);
 			}
 			return hayStack.querySelector(needle);
-		},
-		toString = function(){			
-			var i=0,l,str = o.attr('id') + ":{\n",
-				authItems = ['id','oncreate','onchange','onbeforerender','onafterrender'];
-				for(l=authItems.length; i<l; i++){
-					str += '\t' + authItems[i] + ': ' + o[authItems[i]] + '\n';				
-				}
-				if(oNode && oNode instanceof HTMLElement) var inner = oNode.firstChild.innerHTML || '';
-				str += '\trendered html: ' + inner + '\n';
-			return str + '}\n';
 		};
 		
 	o.getElementsByTagName = function(name){
@@ -33,7 +23,7 @@ nesis.mvc.View = function(a,x){
 		return nodeSearch(qStr,true);
 	};
 	
-	o.render = function(data){ 
+	o.render = function(args){ 
 		var cType,span=document.createElement('span'),pNode=o.parent();
 		
 		frag = document.createDocumentFragment();
@@ -41,13 +31,15 @@ nesis.mvc.View = function(a,x){
 		
 		switch(model.attr('contentType')){
 			case "text/html":
-				span.innerHTML = data;
+				span.innerHTML = args.data;
 				break;
 			case "text/xml":
 				span.innerHTML = '';
 				break;
-			case "text/json":
-				span.innerHTML = '';
+			case "text/json":	
+				var tpl = args.tpl || 'default';
+				tpl = o.children('id',tpl);
+				span.innerHTML = (tpl instanceof ns.Template) ? tpl.transform(args.data) : o.children('id','default').transform(args.data);				
 				break;
 			default:
 				try{throw Error("nesis.mvc." + o.attr('id') + ".render: ContentType " + model.attr('contentType') + " not supported");}
@@ -56,7 +48,7 @@ nesis.mvc.View = function(a,x){
 		}		
 		frag.appendChild(span);
 	
-	var evt = new ns.Event('beforerender',{arguments:arguments});
+		var evt = new ns.Event('beforerender',{arguments:arguments});
 		o.trigger(evt);
 		try{					
 			oNode = document.getElementById(pNode.attr('path'));
@@ -71,13 +63,22 @@ nesis.mvc.View = function(a,x){
 		o.trigger(new ns.Event('afterrender',{arguments:arguments}));
 	};
 	
+	o.template=function(k,v){
+		v.id = k;
+		v.type = 'Template';
+		return new ns.Template(v);
+	};
+	
 	//Start Constructor	
 	//x.template would allow templates to be used with json
-
 	a.type = 'View';
 	
+	var tpl = [];
+	for(var n in x){tpl.push(o.template(n,x[n]));} 
 	//ns.extend(a,b);
-	ns.Node.call(o,a,x);
+	ns.Node.call(o,a,tpl);
+
+//	for(var i=0,l=x.length; i<l; i++){o.append(o.template(o.parent().attr('path'),x[i]));}
 	if(typeof o.attr('onbeforerender')  == 'function')
 		o.bind('beforerender',o.attr('onbeforerender'));
 	if(typeof o.onafterrender  == 'function')
@@ -92,7 +93,6 @@ nesis.mvc.View = function(a,x){
 		id = id.replace(/([ #;?%&,.+*~\':"!^$[\]()=>|\/@])/g,'\\$1');			
 		return nodeSearch('#'+id);
 	};
-		
 };
 //Setup inheritance 
 nesis.mvc.View.prototype = Object.create(nesis.mvc.Node.prototype);

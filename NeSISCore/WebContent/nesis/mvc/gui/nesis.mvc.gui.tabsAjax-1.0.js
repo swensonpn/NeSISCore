@@ -9,23 +9,22 @@ nesis.mvc.gui.tabsAjax = function(e){
 			}		
 			content.id = href.slice(1,-1);
 		};
-	
+
 	frag.parent().children().each(function(){
-		if(this.attr('type') == 'Controller'){
-			a = document.createElement('a'),id=this.attr('id');
+		var o=this,a=document.createElement('a'),id=this.attr('id');
+		if(o.attr('type') == 'Controller'){
+			this.bind('beforerender',function(e){
+				if(e.target == o.view()) content.id = o.attr('path');
+			});
 			a.href = '#' + this.attr('path') + '/';			
 			a.title = this.attr('description') || id;
 			a.innerHTML = this.attr('label') || id;
 			a.addEventListener('click',handler,true);
-			if(this.attr('defaultNode')){
-				a.className = 'active';
-				content.id = this.attr('path');
-			}
+			if(this.attr('defaultNode'))a.className = 'active';
 			tabs.push(a);
 			li = document.createElement('li');
 			li.appendChild(a);
 			tabBar.appendChild(li);
 		}		
 	});
-	
 };

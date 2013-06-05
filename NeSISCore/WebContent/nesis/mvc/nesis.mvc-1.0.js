@@ -1,5 +1,5 @@
 nesis.mvc = (function(){
-	var o=this;
+	var o=this,ns=nesis,c=ns.core;
 
 	//Timing debugger
 	if(document.addEventListener){
@@ -37,6 +37,11 @@ nesis.mvc = (function(){
 	};
 	
 	o.gui = {};
+	o.datasource = {};
+	
+//	o.tpl = c.template.tmpl;
+	o.cache = new c.cache(); 
+	o.error = c.error;
 	
 	return o;	
 })();

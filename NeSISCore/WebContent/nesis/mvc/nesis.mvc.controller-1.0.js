@@ -1,4 +1,4 @@
-nesis.mvc.Controller = function(k,v){
+;nesis.mvc.Controller = function(k,v){
 	var ns=nesis.mvc,o=this,a={},x=[];
 	
 	
@@ -12,17 +12,18 @@ nesis.mvc.Controller = function(k,v){
 		return c;	
 	};
 	
-	o.execute = function(){
+	o.execute = function(args){
+		args = args || {};
 		var m = o.model(); 
-		o.trigger(new ns.Event('beforeexecute',{arguments:arguments}));
+		o.trigger(new ns.Event('beforeexecute',{arguments:args}));
 		if(ns.debugTiming) console.log('execute: ' + o.attr('id'));
-		if(m instanceof ns.Model) m.sync.apply(this,arguments);		
-		o.trigger(new ns.Event('afterexecute',{arguments:arguments}));
+		if(m instanceof ns.Model) m.sync(args);	
+		o.trigger(new ns.Event('afterexecute',{arguments:args}));
 		
 		
 		o.children().each(function(){
 			if(this instanceof ns.Controller && this.attr('defaultNode'))
-				this.execute();
+				this.execute(args);
 		});
 	};
 	
@@ -51,13 +52,13 @@ nesis.mvc.Controller = function(k,v){
 		if(!v) return vw;
 		
 		if(typeof v == 'object'){
-			var n,attr={};
+			var n,attr={},chldrn;
 			for(n in v){
-				attr[n] = v[n];
+				(n == 'templates')? chldrn=v[n] :  attr[n] = v[n];
 			}
 			attr.id = k+'View';	
 			attr.parent = o;
-			v = new ns.View(attr);
+			v = new ns.View(attr,chldrn);
 			if(o.remove){
 				if(m) o.remove(m);
 				o.append(v);

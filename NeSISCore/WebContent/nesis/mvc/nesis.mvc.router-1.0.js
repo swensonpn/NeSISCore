@@ -22,7 +22,8 @@ nesis.mvc.Router = function(options){
 		var l=routes.length-1;
 		for(; l>-1; l--){ 
 			if(path.match(routes[l].route)){		
-				var args = path.replace(routes[l].route,'').split('/');
+				var argArr = path.replace(routes[l].route,'').split('/').slice(1),args={};
+				while(argArr.length>0){var nv=argArr.shift().split(':'); args[nv[0]] = nv[1];}
 				handler(routes[l],args,noHistory);
 				break;
 			}

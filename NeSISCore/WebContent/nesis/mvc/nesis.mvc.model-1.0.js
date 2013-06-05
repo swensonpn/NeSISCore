@@ -47,7 +47,7 @@ nesis.mvc.Model = function(a,x){
 			if(ns.debugAjax) console.log('Server Response: ' + data);
 			if(data != getCache()){
 				setCache(data);
-				o.trigger('change');
+				o.trigger('change');				
 				return data;
 			}				
 		};	
@@ -66,25 +66,26 @@ nesis.mvc.Model = function(a,x){
 		});
 	};
 	
-	o.sync = function(){ 
-		var cache = getCache(),argArr = Array.prototype.slice.call(arguments),
-			evt = new ns.Event('beforesync',{arguments:arguments});						
+	o.sync = function(args){ 
+		args.data = getCache(),
+			evt = new ns.Event('beforesync',{arguments:args});						
 	
 		if(!view) view = o.parent().view();
 	
 		o.trigger(evt);	
-		if(!cache)
+		if(!args.data)
 			toServer({
 				callback:function(res){ 
-					argArr.unshift(fromServer(res));
-					o.trigger(new ns.Event('aftersync',{arguments:arguments}));
-					if(argArr[0]) view.render.apply(this,argArr);
+					args.data = (o.attr('contentType') == 'text/json') ? JSON.parse(fromServer(res)) : fromServer(res);		
+					o.trigger(new ns.Event('aftersync',{arguments:args}));
+					view.render(args)
+
 				}
 			});
-		else{			
-			argArr.unshift(cache); 
-			o.trigger(new ns.Event('aftersync',{arguments:arguments}));			
-			view.render.apply(this,argArr);
+		else{	
+			if(o.attr('contentType') == 'text/json') args.data = JSON.parse(args.data);			
+			o.trigger(new ns.Event('aftersync',{arguments:args}));	
+			view.render(args);
 		}
 	};	
 	
