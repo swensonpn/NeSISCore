@@ -5,7 +5,7 @@
  * @PARAM:Void
  * @RETURN:Void
  */
-nesis.core.browser = function(){
+nesis.core.browser = function(){ 
 	var N= navigator.appName, ua= navigator.userAgent, tem;
 	var M= ua.match(/(opera|chrome|safari|firefox|msie)\/?\s*(\.?\d+(\.\d+)*)/i);
 	if(M && (tem= ua.match(/version\/([\.\d]+)/i))!= null) M[2]= tem[1];
