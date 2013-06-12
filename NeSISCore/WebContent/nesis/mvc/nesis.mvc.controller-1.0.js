@@ -14,17 +14,16 @@
 	
 	o.execute = function(args){
 		args = args || {};
-		var m = o.model(); 
+		var m = o.model(),rslt; 
 		o.trigger(new ns.Event('beforeexecute',{arguments:args}));
 		if(ns.debugTiming) console.log('execute: ' + o.attr('id'));
-		if(m instanceof ns.Model) m.sync(args);	
+		if(m instanceof ns.Model){rslt = m.sync(args);}
 		o.trigger(new ns.Event('afterexecute',{arguments:args}));
-		
-		
+//if need to use rslt to stop flow put in some kind of bubble event				
 		o.children().each(function(){
 			if(this instanceof ns.Controller && this.attr('defaultNode'))
 				this.execute(args);
-		});
+		});		
 	};
 	
 	o.model = function(v){

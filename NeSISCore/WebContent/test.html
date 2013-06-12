@@ -201,18 +201,20 @@ app.execute();
 </script>
 <script type="text/x-template" id="test2">
 	<div id="<%=emplid%>">
-		<table>
+		<a href="#app/tabs/templates/tpl:list">Switch Template</a>
+		<table style="width:80%; margin:10px auto; ">
 			<thead>
 				<tr>
-					<th>NUID</th>
-					<th>NAME</th>
-					<th>OFFICE</th>
-					<th>EMAIL</th>
-					<th>TITLE</th>
+					<th style="border-bottom: 1px solid #DDDDDD;">NUID</th>
+					<th style="border-bottom: 1px solid #DDDDDD;">NAME</th>
+					<th style="border-bottom: 1px solid #DDDDDD;">OFFICE</th>
+					<th style="border-bottom: 1px solid #DDDDDD;">EMAIL</th>
+					<th style="border-bottom: 1px solid #DDDDDD;">TITLE</th>
 				</tr>
 			</thead>
 			<tbody>
 				<tr>
+					<td><%=emplid%></td>
 					<td><%=name%></td>
 					<td><%=office%></td>
 					<td><%=email%></td>
@@ -223,11 +225,12 @@ app.execute();
 </script>
 <script type="text/x-template" id="test">
 	<div id="<%=emplid%>">
-		<table>
-			<tr><td>Name:</td><td><%=name%></td></tr>
-			<tr><td>Office:</td><td><%=office%></td></tr>
-			<tr><td>Email:</td><td><%=email%></td></tr>
-			<tr><td>Title:</td><td><%=title%></td></tr>
+	<a href="#app/tabs/templates/tpl:default">Switch Template</a>
+		<table style=" margin:10px 10%; ">
+			<tr><td><b>Name:</b></td><td><%=name%></td></tr>
+			<tr><td><b>Office:</b></td><td><%=office%></td></tr>
+			<tr><td><b>Email:</b></td><td><%=email%></td></tr>
+			<tr><td><b>Title:</b></td><td><%=title%></td></tr>
 		</table>
 	</div>
 </script>

@@ -17,7 +17,7 @@ nesis.core.cache = function(options){
 		l3={};
 	};
 	
-	o.get = function(key,obj,refresh){
+	o.get = function(key,obj,refresh){ 
 		if(refresh){return o.set(key,obj);}
 		else{
 			//if(l1[key])return l1[key];
@@ -26,23 +26,25 @@ nesis.core.cache = function(options){
 			if(l3[key]){
 				var tmp = JSON.parse(l3[key]),t= new Date();
 				if((obj.lastModified && tmp.stamp>obj.lastModified)||(obj.expires && tmp.stamp < obj.expires))
-					return o.set(key,obj);
+					return o.set(key,obj); 
 				return tmp;
-			}
+			}		
 			return o.set(key,obj);
 		}
 	};
 	
-	o.set = function(key,obj){
+	o.set = function(key,obj){ 
 		obj.key = key;
-		obj.stamp = new Date();
-		if(obj.datasource) obj = obj.datasource(obj);
+		obj.stamp = new Date(); 
+		if(obj.datasource && !obj.data) obj = obj.datasource(obj);
+	
+		if(!obj.data) return obj;//non-blocking implementation				//Big fat trial and error
 		if(lookup[key]) l1[lookup[key]] = obj;
 		else
 			lookup[key] = l1[l1.length] = obj;
-		
-		//l1[key] = obj;
-		(obj.persist) ? l3[key] = JSON.stringify(obj) : l2[key] = JSON.stringify(obj);		
+
+		(obj.persist) ? l3[key] = JSON.stringify(obj) : l2[key] = JSON.stringify(obj);
+
 		return obj;
 	};
 	
@@ -66,10 +68,12 @@ nesis.core.cache = function(options){
 		return str + '}';
 	};
 
+	//Start Constructor
 	for(var n in options){dflts[n]=options[n];}
 	l2=sessionStorage || {};
 	l3=localStorage || {};
-	
+
+	//Garbage Collector
 	setInterval(function(){
 		var t = new Date(new Date().getTime()-dflts.l1exp);
 		l1.sort(function(a,b){return b.stamp-a.stamp;});

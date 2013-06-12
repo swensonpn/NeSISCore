@@ -19,7 +19,7 @@ nesis.net.http = {
 					}
 					
 					reqObj.onreadystatechange = function(){
-						if(reqObj.readyState == 4 && reqObj.status == 200){	
+						if(reqObj.readyState == 4 && (reqObj.status == 200 || reqObj.status == 304)){	
 							opts.callback(reqObj);
 						}
 					};

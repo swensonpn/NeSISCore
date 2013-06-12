@@ -1,4 +1,3 @@
-
 var app = new nesis.mvc.Application({	
 	model:{
 		contentType:'text/html',
@@ -22,7 +21,7 @@ app.controller('tabs',{
 		model:{
 			contentType:'text/html',
 			expires:'Wed, 23 May 2013 18:47:53 GMT',
-			remoteURL:'http://localhost/NeSISCore/demos/guiControls/static.php'
+			url:'http://localhost/NeSISCore/demos/guiControls/static.php'
 		},
 		view:{
 			onbeforerender:function(e){
@@ -37,7 +36,7 @@ app.controller('tabs',{
 		model:{
 			contentType:'text/html',
 			expires:'0',
-			remoteURL:'http://localhost/NeSISCore/demos/guiControls/textEditableAjax.php'
+			url:'http://localhost/NeSISCore/demos/guiControls/textEditableAjax.php'
 		},
 		view:{
 			onbeforerender:function(e){
@@ -51,7 +50,7 @@ app.controller('tabs',{
 		model:{
 			contentType:'text/html',		
 			lastModified:'Wed, 22 May 2013 17:44:03 GMT',
-			remoteURL:'http://localhost/NeSISCore/demos/guiControls/formAjax.php'
+			url:'http://localhost/NeSISCore/demos/guiControls/formAjax.php'
 		},
 		view:{
 			onbeforerender:function(e){
@@ -66,7 +65,7 @@ app.controller('tabs',{
 		model:{
 			contentType:'text/html',
 			lastModified:'Wed, 22 May 2013 17:44:03 GMT',
-			remoteURL:'http://localhost/NeSISCore/demos/guiControls/psLinkList.php',
+			url:'http://localhost/NeSISCore/demos/guiControls/psLinkList.php',
 			template:''
 		},
 		view:{
@@ -77,7 +76,7 @@ app.controller('tabs',{
 					links[i].addEventListener('click',function(e){ 
 						e.preventDefault();
 						var html = '<iframe id="mvc-target-frame" name="mvc-target-frame" src="' + links[i].getAttribute('href') + '"></iframe>';
-						app.controller('lightbox').execute(html);
+						app.controller('lightbox').execute({data:html});
 							
 					},true);
 				}
@@ -89,34 +88,26 @@ app.controller('tabs',{
 		model:{
 			contentType:'text/json',		
 			lastModified:'Wed, 22 May 2013 17:44:03 GMT',
-			remoteURL:'http://localhost/NeSISCore/demos/guiControls/json.php'
+			url:'http://localhost/NeSISCore/demos/guiControls/json.php'
 		},
 		view:{
-			onbeforerender:function(e){
-				//nesis.mvc.gui.formAjax(e);
-			},
 			templates:{
 				'list':{
 					domId:'test',
 					templateType:'javascript'
 				},
-				'default':{
-					domId:'test2',
-					templateType:'javascript'
-				},
-				'remote':{
+				'table':{
 					url:'http://localhost/NeSISCore/demos/guiControls/js/listTemplate.js',
-					templateType:'javascript'
-				}  
+					//domId:'test2',
+					templateType:'javascript',
+					defaultNode:true
+				} 
 			}
 		},
 		label:'JSON Templating',
 		defaultNode:true,
-		debug:true
-	})
-	
-console.log(app.controller('tabs').controller('templates').view().children('id','default').toString());
-
+		//debug:true
+	});
 	
 app.controller('lightbox',{	
 		model:{			

@@ -23,7 +23,7 @@ nesis.mvc.View = function(a,x){
 		return nodeSearch(qStr,true);
 	};
 	
-	o.render = function(args){ 
+	o.render = function(args){
 		var cType,span=document.createElement('span'),pNode=o.parent();
 		
 		frag = document.createDocumentFragment();
@@ -37,9 +37,13 @@ nesis.mvc.View = function(a,x){
 				span.innerHTML = '';
 				break;
 			case "text/json":	
-				var tpl = args.tpl || 'default';
-				tpl = o.children('id',tpl);
-				span.innerHTML = (tpl instanceof ns.Template) ? tpl.transform(args.data) : o.children('id','default').transform(args.data);				
+				var tpl = (args.tpl) ? o.children('id',args.tpl) : o.children('defaultNode',true)[0];
+				if(tpl instanceof ns.Template) 
+					tpl = tpl.transform(args.data);	
+				if(tpl === false){
+					return false;
+				}
+				span.innerHTML = tpl;
 				break;
 			default:
 				try{throw Error("nesis.mvc." + o.attr('id') + ".render: ContentType " + model.attr('contentType') + " not supported");}
@@ -66,6 +70,7 @@ nesis.mvc.View = function(a,x){
 	o.template=function(k,v){
 		v.id = k;
 		v.type = 'Template';
+		v.parent = o;
 		return new ns.Template(v);
 	};
 	

@@ -1,4 +1,5 @@
 nesis.mvc.gui.tabsAjax = function(e){	
+
 	if(!e.target instanceof View)return;
 	
 	var frag=e.target,tabBar=frag.querySelector('.mvc-tab-list'),tabs=[],a,li,content=frag.querySelector('.mvc-tab-content'),
@@ -14,8 +15,14 @@ nesis.mvc.gui.tabsAjax = function(e){
 		var o=this,a=document.createElement('a'),id=this.attr('id');
 		if(o.attr('type') == 'Controller'){
 			this.bind('beforerender',function(e){
-				if(e.target == o.view()) content.id = o.attr('path');
+				if(e.target != o.view()) return;				
+				var href = o.attr('path'),i=0,l=tabs.length;
+				content.id = href;
+				for(var i=0; i<l; i++){						
+					tabs[i].className = (tabs[i].getAttribute('href').slice(1,-1) == href) ? 'active' : '';							
+				}	
 			});
+		
 			a.href = '#' + this.attr('path') + '/';			
 			a.title = this.attr('description') || id;
 			a.innerHTML = this.attr('label') || id;

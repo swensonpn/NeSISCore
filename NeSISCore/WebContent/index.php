@@ -96,18 +96,20 @@ else{
 </footer>
 <script type="text/x-template" id="test2">
 	<div id="<%=emplid%>">
-		<table>
+		<a href="#app/tabs/templates/tpl:list">Switch Template</a>
+		<table style="width:80%; margin:10px auto; ">
 			<thead>
 				<tr>
-					<th>NUID</th>
-					<th>NAME</th>
-					<th>OFFICE</th>
-					<th>EMAIL</th>
-					<th>TITLE</th>
+					<th style="border-bottom: 1px solid #DDDDDD;">NUID</th>
+					<th style="border-bottom: 1px solid #DDDDDD;">NAME</th>
+					<th style="border-bottom: 1px solid #DDDDDD;">OFFICE</th>
+					<th style="border-bottom: 1px solid #DDDDDD;">EMAIL</th>
+					<th style="border-bottom: 1px solid #DDDDDD;">TITLE</th>
 				</tr>
 			</thead>
 			<tbody>
 				<tr>
+					<td><%=emplid%></td>
 					<td><%=name%></td>
 					<td><%=office%></td>
 					<td><%=email%></td>
@@ -118,11 +120,12 @@ else{
 </script>
 <script type="text/x-template" id="test">
 	<div id="<%=emplid%>">
-		<table>
-			<tr><td>Name:</td><td><%=name%></td></tr>
-			<tr><td>Office:</td><td><%=office%></td></tr>
-			<tr><td>Email:</td><td><%=email%></td></tr>
-			<tr><td>Title:</td><td><%=title%></td></tr>
+	<a href="#app/tabs/templates/tpl:table">Switch Template</a>
+		<table style=" margin:10px 10%; ">
+			<tr><td><b>Name:</b></td><td><%=name%></td></tr>
+			<tr><td><b>Office:</b></td><td><%=office%></td></tr>
+			<tr><td><b>Email:</b></td><td><%=email%></td></tr>
+			<tr><td><b>Title:</b></td><td><%=title%></td></tr>
 		</table>
 	</div>
 </script>
@@ -140,6 +143,7 @@ else{
 <script type="text/javascript" src="nesis/mvc/gui/nesis.mvc.gui.lightbox-1.0.js"></script>
 <script type="text/javascript" src="nesis/mvc/gui/nesis.mvc.gui.tabsStatic-1.0.js"></script>
 <script type="text/javascript" src="nesis/mvc/datasource/nesis.mvc.datasource.dom-1.0.js"></script>
+<script type="text/javascript" src="nesis/mvc/datasource/nesis.mvc.datasource.ajax-1.0.js"></script>
 <script type="text/javascript" src="nesis/mvc/nesis.mvc.event-1.0.js"></script>
 <script type="text/javascript" src="nesis/mvc/nesis.mvc.nodecollection-1.0.js"></script>
 <script type="text/javascript" src="nesis/mvc/nesis.mvc.node-1.0.js"></script>
@@ -149,6 +153,7 @@ else{
 <script type="text/javascript" src="nesis/mvc/nesis.mvc.model-1.0.js"></script>
 <script type="text/javascript" src="nesis/mvc/nesis.mvc.view-1.0.js"></script>
 <script type="text/javascript" src="nesis/mvc/nesis.mvc.template-1.0.js"></script>
+
 <?php 
 if(isset($js)){
 	echo '<script type="text/javascript">';

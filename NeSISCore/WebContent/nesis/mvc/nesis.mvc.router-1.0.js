@@ -63,7 +63,7 @@ nesis.mvc.Router = function(options){
 	
 	if(handler == handleHashBang)
 		window.addEventListener("hashchange",function(e){
-			var path = location.hash.substr(1) || 'app';		
+			var path = location.hash.substr(1) || 'app';
 			o.handleRoute(path);
 		},false);
 	else
