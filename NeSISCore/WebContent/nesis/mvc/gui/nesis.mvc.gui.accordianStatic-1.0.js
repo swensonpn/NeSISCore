@@ -1,5 +1,5 @@
 nesis.mvc.gui.accordianStatic = function(e){
-	if(!e.target instanceof View) return;
+	if(!e.target instanceof View) return; 
 	
 	var frag=e.target,bars=frag.querySelectorAll('.mvc-accordian-actuator a'),i=0,l=bars.length,
 		handler=function(e){
