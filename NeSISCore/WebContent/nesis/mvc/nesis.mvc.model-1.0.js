@@ -63,6 +63,11 @@ nesis.mvc.Model = function(a,x){
 		
 	ns.Node.call(o,a,{});
 	
+	o.append = undefined;
+	o.children = undefined;
+	o.find = undefined;
+	o.remove = undefined;
+	
 	cObj = {
 			data:a.data,
 			domId:a.domId,

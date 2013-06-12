@@ -83,7 +83,8 @@ nesis.mvc.View = function(a,x){
 	//ns.extend(a,b);
 	ns.Node.call(o,a,tpl);
 
-//	for(var i=0,l=x.length; i<l; i++){o.append(o.template(o.parent().attr('path'),x[i]));}
+	o.find = undefined;
+
 	if(typeof o.attr('onbeforerender')  == 'function')
 		o.bind('beforerender',o.attr('onbeforerender'));
 	if(typeof o.onafterrender  == 'function')
