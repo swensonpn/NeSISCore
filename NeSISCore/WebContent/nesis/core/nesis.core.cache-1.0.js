@@ -18,7 +18,10 @@ nesis.core.cache = function(options){
 	};
 	
 	o.get = function(key,obj,refresh){ 
-		if(refresh){return o.set(key,obj);}
+		if(refresh){
+			obj.data = undefined;
+			return o.set(key,obj);
+		}
 		else{
 			//if(l1[key])return l1[key];
 			if(lookup[key]) return lookup[key];

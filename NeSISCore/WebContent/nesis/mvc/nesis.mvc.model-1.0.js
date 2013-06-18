@@ -20,7 +20,8 @@ nesis.mvc.Model = function(a,x){
 		});	
 	};
 	
-	o.sync = function(args){
+	o.sync = function(args,refresh){
+		refresh = refresh || args.refresh;
 		o.trigger(new ns.Event('beforesync',{arguments:args}));
 		if(!view) view = o.parent().view();
 		
@@ -36,7 +37,13 @@ nesis.mvc.Model = function(a,x){
 			}
 		};
 		
-		cObj = ns.cache.get(cacheKey,cObj); 
+		if(cObj.url){
+			var qStr = '?';
+			for(var n in args){qStr += n + '=' + args[n] + '&';}
+			cObj.url = cObj.url.split('?')[0] + qStr;
+		}
+		
+		cObj = ns.cache.get(cacheKey,cObj,refresh); 
 		if(cObj.data){
 			args.data = cObj.data;
 			o.trigger(new ns.Event('aftersync',{arguments:args}));		

@@ -133,6 +133,9 @@ nesis.net.http = {
 			throw Error("nesis.net.http: param options must be type Object");
 		}
 		
+		//fix url fragments
+		if(url.indexOf('http') != 0) url = location.protocol + '//' + location.host + '/' + url;
+		
 		//create universal object		
 		ajaxObj = (url.search(window.location.host) != -1)? new xmlHttp(url, defaults) : new jsonp(url,defaults);
 

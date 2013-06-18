@@ -1,7 +1,7 @@
 nesis.mvc.Router = function(options){
 	var o=this,routes=[],handler,
 		defaults={
-			method:'hashBang', //hashbang || pushstate || auto
+			method:'hashBang' //hashbang || pushstate || auto
 		},
 		handleHashBang = function(rObj,args){
 			rObj.scope[rObj.callback](args);

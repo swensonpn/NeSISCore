@@ -30,9 +30,11 @@ nesis.mvc.NodeCollection = function(x){
 			if(arr[i].attr([k]) == v){
 				if(k == 'id') return arr[i];
 				rslt.push(arr[i]);
-			}
-			if(deep && arr[i].children().length > 0){
-				rslt.concat(arr[i].children().find(k,v,true));
+			}			
+			if(deep && arr[i].children && arr[i].children().length > 0){
+				var tmp = arr[i].children().find(k,v,true);
+				if(tmp instanceof ns.Node) return tmp;
+				rslt = rslt.concat(tmp);
 			}
 		}
 		return rslt;

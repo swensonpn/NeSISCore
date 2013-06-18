@@ -110,3 +110,27 @@
 .mvc-lightbox-content{
 	margin:10px;
 }
+
+/*Typeahead*/
+.mvc-typeahead{}
+.mvc-typeahead ul{
+	list-style-type:none;
+	margin:0;
+	padding:0;
+	border:1px solid #ddd;
+	border-radius:4px;
+	display:table;
+	position:absolute;
+	background-color:#ffffff;
+}
+.mvc-typeahead ul a{
+	display:block;
+	padding:8px 16px;
+}
+
+.mvc-typeahead ul a:hover{
+	text-decoration: none;
+	background-color: #eeeeee;
+	border:radius:4px;
+}
+

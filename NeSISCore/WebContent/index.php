@@ -41,8 +41,11 @@ if(isset($_GET['demo'])){
 						<a href="./index.php?page=prefs">Preferences</a>
 					</li>
 					<li class>
-						<a href="https://github.com/swensonpn/NeSISCore" target="_blank">GitHub</a>
+						<a href="./index.php?page=download" >Download</a>
 					</li>
+					<li class>
+						<a href="https://github.com/swensonpn/NeSISCore" target="_blank">GitHub</a>
+					</li>					
 				</ul>
 			</div>
 		</div>
@@ -68,6 +71,12 @@ else{
 				$title="Preferences";
 				$text = "Change configuration settings to change behavior and get familiar with the debugging tools.";
 				$content = "prefs.inc";
+				break;
+			case "download":
+				$title="Download";
+				$text = "Create a single minified JavaScript file.";
+				$content = "download.inc";
+				break;
 		}
 	}
 
@@ -95,6 +104,7 @@ else{
 	</div>
 </footer>
 <script type="text/x-template" id="test2">
+	<h3>JavaScript Templates</h3>
 	<div id="<%=emplid%>">
 		<a href="#app/tabs/templates/tpl:list">Switch Template</a>
 		<table style="width:80%; margin:10px auto; ">
@@ -119,6 +129,7 @@ else{
 	</div>
 </script>
 <script type="text/x-template" id="test">
+	<h3>JavaScript Templates</h3>
 	<div id="<%=emplid%>">
 	<a href="#app/tabs/templates/tpl:table">Switch Template</a>
 		<table style=" margin:10px 10%; ">
@@ -129,6 +140,32 @@ else{
 		</table>
 	</div>
 </script>
+<script type="text/x-template" id="inBody">
+<div>
+	<table style="width:50%; margin:10px auto; ">
+		<caption><h4>Countries of the World</h4></caption>
+		<thead>
+			<tr><th>Country Code</th><th>Country Name</th></tr>
+		</thead>
+		<tbody>
+			<% for(var i=0,l=data.length; i<l; i++){ %>
+			<tr><td><%=data[i].code%></td><td><%=data[i].name%></td></tr>
+			<% } %>
+		</tbody>
+	</table>
+</div>
+</script>
+<?php 
+	if(isset($_GET['mode'])){
+		if(strcmp($_GET['mode'],'prod') == 0){
+			echo '<script type="text/javascript" src="closure-compiler/nesis.js"></script>';
+		}
+		else if(strcmp($_GET['mode'],'min') == 0){
+			echo '<script type="text/javascript" src="closure-compiler/nesis.min.js"></script>';
+		}
+	}
+	else{
+?>
 <script src="nesis-init.php"></script>
 <script type="text/javascript" src="nesis/core/nesis.core.error-1.0.js"></script>
 <script type="text/javascript" src="nesis/core/nesis.core.browser-1.0.js"></script>
@@ -142,6 +179,7 @@ else{
 <script type="text/javascript" src="nesis/mvc/gui/nesis.mvc.gui.textEditableAjax-1.0.js"></script>
 <script type="text/javascript" src="nesis/mvc/gui/nesis.mvc.gui.lightbox-1.0.js"></script>
 <script type="text/javascript" src="nesis/mvc/gui/nesis.mvc.gui.tabsStatic-1.0.js"></script>
+<script type="text/javascript" src="nesis/mvc/gui/nesis.mvc.gui.typeahead-1.0.js"></script>
 <script type="text/javascript" src="nesis/mvc/datasource/nesis.mvc.datasource.dom-1.0.js"></script>
 <script type="text/javascript" src="nesis/mvc/datasource/nesis.mvc.datasource.ajax-1.0.js"></script>
 <script type="text/javascript" src="nesis/mvc/nesis.mvc.event-1.0.js"></script>
@@ -153,13 +191,13 @@ else{
 <script type="text/javascript" src="nesis/mvc/nesis.mvc.model-1.0.js"></script>
 <script type="text/javascript" src="nesis/mvc/nesis.mvc.view-1.0.js"></script>
 <script type="text/javascript" src="nesis/mvc/nesis.mvc.template-1.0.js"></script>
-
 <?php 
-if(isset($js)){
-	echo '<script type="text/javascript">';
-	echo $js;
-	echo '</script>';
-}	
+	}
+	if(isset($js)){
+		echo '<script type="text/javascript">';
+		echo $js;
+		echo '</script>';
+	}	
 ?>
 </body>
 </html>

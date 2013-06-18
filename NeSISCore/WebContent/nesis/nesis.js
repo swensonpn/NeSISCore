@@ -1,16 +1,18 @@
 nesis = {	
-	_init:function(){
-		document.domain="localhost";
+	_init:function(opts){
+		opts = opts || {};
+			
+		document.domain = opts.domain || location.host;
 		
 		//Displays general runtime messages in the console
-		nesis.debugOn = true;
+		nesis.debugOn = opts.debugOn || true;
 		
 		/*nesis.core.store - Manages the browsers data store
 		 *  debug: true to display console messages
 		 */
 		this.core.store._init({
-			debug:false,
-			flush:true
+			debug:opts.storeDebug || false,
+			flush:opts.storeFlush || false
 		});
 		
 		/*nesis.core.error - Handles error logging 
@@ -23,13 +25,13 @@ nesis = {
 		 *  Maximum number of errors to save in the local log
 		 */
 		this.core.error._init({
-			logLevel:2,
-			maxLogSize:20,
-			remoteUrl:"http://localhost/nesisCore/WebContent/echo.php"
+			logLevel:opts.logLevel || 2,
+			maxLogSize:opts.logSize || 20,
+			remoteUrl:opts.logSubmit || location.host
 		});
-		//this.core.error._init({logLevel:1,remoteUrl:"http://unkwebprd.unk.edu/echo.php"});
 		
 		/*nesis.mvc - Model,View,Controller framework
+		 *  debugTiming: true to write events that fire a handler
 		 *  debugEventFired: true to write runtime events to the console as they fire
 		 *  debugEventBind: true to write events added to objects
 		 *  debugEventUnbind: true to write events removed from objects
@@ -37,14 +39,14 @@ nesis = {
 		 *  
 		 *  ajaxReqCacheDelay: When offline how long until attepting request again.
 		 */
-		this.mvc.debugTiming = false;
-		this.mvc.debugEventFired = false;
-		this.mvc.debugEventBind = false;
-		this.mvc.debugEventUnbind = false;
-		this.mvc.debugCache = false;
-		this.mvc.debugAjax = false;
+		this.mvc.debugTiming = opts.debugTiming || false;
+		this.mvc.debugEventFired = opts.debugHandlers || false;
+		this.mvc.debugEventBind = opts.debugBind || false;
+		this.mvc.debugEventUnbind = opts.debugUnbind || false;
+		this.mvc.debugCache = opts.debugCache || false;
+		this.mvc.debugAjax = opts.debugAjax || false;
 		
-		this.mvc.ajaxReqCacheDelay = 2000;
+		this.mvc.ajaxReqCacheDelay = opts.ajaxRetry || 2000;
 	},
 	core:{},
 	net:{}	
