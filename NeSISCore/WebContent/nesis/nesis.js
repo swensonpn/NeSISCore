@@ -25,7 +25,7 @@ nesis = {
 		 *  Maximum number of errors to save in the local log
 		 */
 		this.core.error._init({
-			logLevel:opts.logLevel || 2,
+			logLevel:opts.logLevel || 0,
 			maxLogSize:opts.logSize || 20,
 			remoteUrl:opts.logSubmit || location.host
 		});

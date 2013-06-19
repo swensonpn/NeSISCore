@@ -179,6 +179,7 @@ parent.model({
 	toString() - convert to string value
 	trigger(string/object event) - fire a specified event for this object
 	unbind(string type,function handler) - remove an event listener	
+	view() - get this node's view sibling
 				</pre>
 			</section>
 			<section id="views">
@@ -224,6 +225,7 @@ parent.view({
 	children([string key,mixed value]) - get a child node or array of nodes.
 	getElementById(string id) - allows direct DOM access from the view object
 	getElementsByTagName(string tagname) - allows direct DOM access from the view object
+	model() - get this node's sibling model
 	parent() - get the node's parent node
 	querySelector(string cssSelector) - allows direct DOM access from the view object
 	querySelectorAll(string cssSelector) - allows direct DOM access from the view object

@@ -25,7 +25,7 @@ if(!isset($_SESSION['prefs'])){
 	);
 }
 
-if(!empty($_POST)){
+if(!empty($_POST) && !isset($_POST['app'])){
 	foreach($_SESSION['prefs'] as $key=>$val){
 		$postKey = str_replace('.','_',$key);
 		if(isset($_POST[$postKey])){

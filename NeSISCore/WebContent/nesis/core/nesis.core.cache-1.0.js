@@ -41,7 +41,7 @@ nesis.core.cache = function(options){
 		obj.stamp = new Date(); 
 		if(obj.datasource && !obj.data) obj = obj.datasource(obj);
 	
-		if(!obj.data) return obj;//non-blocking implementation				//Big fat trial and error
+		if(!obj.data) return obj;//non-blocking implementation		//Big fat trial and error
 		if(lookup[key]) l1[lookup[key]] = obj;
 		else
 			lookup[key] = l1[l1.length] = obj;

@@ -15,6 +15,11 @@ nesis.mvc.View = function(a,x){
 		return nodeSearch(name,[]);
 	};
 	
+	o.model = function(){
+		if(!model) model = o.parent().model();
+		return model;
+	};
+	
 	o.querySelector = function(qStr){
 		return nodeSearch(qStr);
 	};
@@ -24,10 +29,9 @@ nesis.mvc.View = function(a,x){
 	};
 	
 	o.render = function(args){
-		var cType,span=document.createElement('span'),pNode=o.parent();
+		var cType,span=document.createElement('span'),pNode=o.parent(),model=o.model();
 		
 		frag = document.createDocumentFragment();
-		if(!model) model = pNode.model(); 
 		
 		switch(model.attr('contentType')){
 			case "text/html":

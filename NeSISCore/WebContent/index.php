@@ -2,7 +2,18 @@
 	include "global.inc";
 	
 	if(isset($_GET['demo'])){
-		$js = file_get_contents("demos/".$_GET['demo']."/js/app.js");
+		if(strcmp($_GET['demo'],'tryit') == 0){
+			if(isset($_POST['app'])){
+				$js = $_POST['app'];
+				$_SESSION['tryit'] = $_POST['app'];
+			}
+			else{
+				$js = file_get_contents("demos/guiControls/js/app.js");
+			}
+		}
+		else{
+			$js = file_get_contents("demos/".$_GET['demo']."/js/app.js");
+		}
 	}
 	
 ?>
@@ -13,7 +24,12 @@
 <link type="text/css" rel="stylesheet" href="css/bootstrap.min.css"/>
 <?php 
 if(isset($_GET['demo'])){
-	echo '<link type="text/css" rel="stylesheet" href="demos/'.$_GET['demo'].'/css/styles.css"/>';
+	if(strcmp($_GET['demo'],'tryit') == 0){
+		echo '<link type="text/css" rel="stylesheet" href="demos/guiControls/css/styles.css"/>';
+	}
+	else{
+		echo '<link type="text/css" rel="stylesheet" href="demos/'.$_GET['demo'].'/css/styles.css"/>';
+	}
 }
 
 ?>
@@ -44,6 +60,9 @@ if(isset($_GET['demo'])){
 						<a href="./index.php?page=download" >Download</a>
 					</li>
 					<li class>
+						<a href="./index.php?page=try" >Try It</a>
+					</li>
+					<li class>
 						<a href="https://github.com/swensonpn/NeSISCore" target="_blank">GitHub</a>
 					</li>					
 				</ul>
@@ -53,7 +72,12 @@ if(isset($_GET['demo'])){
 </div>
 <?php 
 if(isset($_GET['demo'])){
-	include "demos/".$_GET['demo']."/index.html";
+	if(strcmp($_GET['demo'],'tryit') == 0){
+		include "demos/guiControls/index.html";
+	}
+	else{
+		include "demos/".$_GET['demo']."/index.html";
+	}
 }
 else{
 	$title = "NeSIS Core";
@@ -76,6 +100,11 @@ else{
 				$title="Download";
 				$text = "Create a single minified JavaScript file.";
 				$content = "download.inc";
+				break;
+			case "try":
+				$title="Roll Your Own";
+				$text = "Expirement with the framework using the default demo packages.";
+				$content = "try.inc";
 				break;
 		}
 	}

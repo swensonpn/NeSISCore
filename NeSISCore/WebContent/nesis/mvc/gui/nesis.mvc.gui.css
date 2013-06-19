@@ -123,12 +123,16 @@
 	position:absolute;
 	background-color:#ffffff;
 }
-.mvc-typeahead ul a{
+.mvc-typeahead ul a,
+.mvc-typeahead ul span{
 	display:block;
 	padding:8px 16px;
+	color: #0088CC;
+	cursor:pointer;
 }
 
-.mvc-typeahead ul a:hover{
+.mvc-typeahead ul a:hover,
+.mvc-typeahead ul span:hover{
 	text-decoration: none;
 	background-color: #eeeeee;
 	border:radius:4px;
