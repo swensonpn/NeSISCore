@@ -37,7 +37,7 @@ nesis = {
 		 *  debugEventUnbind: true to write events removed from objects
 		 *  debugCache: true to write cache management messages
 		 *  
-		 *  ajaxReqCacheDelay: When offline how long until attepting request again.
+		 *  ajaxReqCacheDelay: When offline how long until attempting request again.
 		 */
 		this.mvc.debugTiming = opts.debugTiming || false;
 		this.mvc.debugEventFired = opts.debugHandlers || false;
