@@ -18,7 +18,10 @@ nesis.core.cache = function(options){
 	};
 	
 	o.get = function(key,obj,refresh){ 
-		if(refresh){return o.set(key,obj);}
+		if(refresh){
+			obj.data = undefined;
+			return o.set(key,obj);
+		}
 		else{
 			//if(l1[key])return l1[key];
 			if(lookup[key]) return lookup[key];
@@ -38,7 +41,7 @@ nesis.core.cache = function(options){
 		obj.stamp = new Date(); 
 		if(obj.datasource && !obj.data) obj = obj.datasource(obj);
 	
-		if(!obj.data) return obj;//non-blocking implementation				//Big fat trial and error
+		if(!obj.data) return obj;//non-blocking implementation		//Big fat trial and error
 		if(lookup[key]) l1[lookup[key]] = obj;
 		else
 			lookup[key] = l1[l1.length] = obj;

@@ -1,3 +1,4 @@
+<h3>JavaScript Templates</h3>
 <div id="<%=emplid%>">
 		<a href="#app/tabs/templates/tpl:list">Switch Template</a>
 		<table style="width:80%; margin:10px auto; ">

@@ -56,7 +56,7 @@
 				<pre>
 					<?php //echo file_get_contents("demos/guiControls/js/app.js")?>
 				</pre>
-			</section>
+			</section>			
 		</div>
 	</div>
 </div>

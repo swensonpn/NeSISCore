@@ -104,11 +104,50 @@ app.controller('tabs',{
 				} 
 			}
 		},
-		label:'JSON Templating',
-		defaultNode:true,
-		//debug:true
+		label:'JSON Templating',		
+	})
+	.parent()
+	.controller('typeahead',{
+		model:{
+			data:'<h3>Type Ahead Search</h3><span class="mvc-typeahead"></span><div id="app/tabs/typeahead/countries"></div>',
+		},
+		view:{
+			onbeforerender:function(e){
+				nesis.mvc.gui.typeahead(e,{
+					datasource:this.parent().find('id','countriesModel'),
+				//	datasource:'NeSISCore/demos/guiControls/typeahead.php',					
+				//  datasource:[{code:'US',name:'United States'},{code:'UM',name:'United States Minor Outlying Islands'},{code:'GB',name:'United Kingdom'}],
+					searchOn:'name,code',
+					resultLabel:'name',
+					resultValue:'code'
+				});
+			}
+		},
+		defaultNode:true
+	})
+	.controller('countries',{
+		model:{
+			contentType:'text/json',
+			url:'http://localhost/NeSISCore/demos/guiControls/typeahead.php'
+		},
+		view:{
+			templates:{
+				body:{
+					domId:'inBody',
+					templateType:'javascript',
+					defaultNode:true
+				}
+			}			
+		},
+		oncreate:function(e){
+			var o=this;
+			o.parent().bind('change',function(e){
+				o.model().sync(e.arguments,true);
+			});
+		},
+		defaultNode:true
 	});
-	
+
 app.controller('lightbox',{	
 		model:{			
 			contentType:'text/html',

@@ -14,15 +14,15 @@ nesis.mvc.Model = function(a,x){
 				if(cObj.data){			
 					args = {data:cObj.data};
 					o.trigger(new ns.Event('aftersave',{arguments:args})); 
-					view.render(args);	
+					o.view().render(args);	
 				}
 			}
 		});	
 	};
 	
-	o.sync = function(args){
-		o.trigger(new ns.Event('beforesync',{arguments:args}));
-		if(!view) view = o.parent().view();
+	o.sync = function(args,refresh){ 
+		refresh = refresh || args.refresh;
+		o.trigger(new ns.Event('beforesync',{arguments:args}));		
 		
 		cObj.callback = function(res){
 			var cType = o.attr('contentType');
@@ -32,16 +32,27 @@ nesis.mvc.Model = function(a,x){
 			if(cObj.data){				
 				args.data = cObj.data;
 				o.trigger(new ns.Event('aftersync',{arguments:args}));
-				view.render(args);	
+				o.view().render(args);	
 			}
 		};
 		
-		cObj = ns.cache.get(cacheKey,cObj); 
+		if(cObj.url){
+			var qStr = '?';
+			for(var n in args){qStr += n + '=' + args[n] + '&';}
+			cObj.url = cObj.url.split('?')[0] + qStr;
+		}
+		
+		cObj = ns.cache.get(cacheKey,cObj,refresh); 
 		if(cObj.data){
 			args.data = cObj.data;
 			o.trigger(new ns.Event('aftersync',{arguments:args}));		
-			return view.render(args);
+			return o.view().render(args);
 		}
+	};
+	
+	o.view = function(){
+		if(!view) view = o.parent().view();
+		return view;
 	};
 	
 	//Start Constructor
@@ -62,6 +73,11 @@ nesis.mvc.Model = function(a,x){
 	}
 		
 	ns.Node.call(o,a,{});
+	
+	o.append = undefined;
+	o.children = undefined;
+	o.find = undefined;
+	o.remove = undefined;
 	
 	cObj = {
 			data:a.data,
@@ -88,7 +104,7 @@ nesis.mvc.Model = function(a,x){
 	}
 	catch(err){			
 		nesis.core.error.handle(err);
-	}	
+	};	
 };
 //Setup inheritance  
 nesis.mvc.Model.prototype = Object.create(nesis.mvc.Node.prototype);

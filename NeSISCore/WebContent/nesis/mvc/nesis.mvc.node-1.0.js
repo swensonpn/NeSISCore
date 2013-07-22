@@ -72,17 +72,20 @@ nesis.mvc.Node = function(a,x){
 			
 		evt.target = e.target || o;	
 		
-    	if(!events[evt.type]){
-    		if(ns.debugTiming) console.log(eMsg + evt.type + '): None Defined');
-    	}
-    	else{
+ //   	if(!events[evt.type]){
+ //   		if(ns.debugTiming) console.log(eMsg + evt.type + '): None Defined');
+ //   	}
+ //   	else{
+if(events[evt.type]){		
     		var i=0,l=events[evt.type].length;  
     		for(; i < l; i++){ 	    					
-				events[evt.type][i](evt);
+				events[evt.type][i].call(o,evt);
+				//events[evt.type][i](evt);
 				if(ns.debugEventFired || attr.debug) console.log(eMsg + evt.type + '): ' + events[evt.type][i]);
 				if(ns.debugTiming) console.log(eMsg + evt.type + '): fired');	    			
-    		}	    		
-    	} 
+    		}
+}    		
+//    	} 
     	
     	if(evt.bubbles && attr.parent) {
     		if(attr.parent.trigger) attr.parent.trigger(evt);
