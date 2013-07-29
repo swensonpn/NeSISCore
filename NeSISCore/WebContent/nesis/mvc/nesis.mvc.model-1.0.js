@@ -39,10 +39,12 @@ nesis.mvc.Model = function(a,x){
 		if(cObj.url){
 			var qStr = '?';
 			for(var n in args){qStr += n + '=' + args[n] + '&';}
-			cObj.url = cObj.url.split('?')[0] + qStr;
+			var s = cObj.url.split('?');
+			cObj.url = s[0] + qStr + (s[1] || '');			
 		}
 		
 		cObj = ns.cache.get(cacheKey,cObj,refresh); 
+	
 		if(cObj.data){
 			args.data = cObj.data;
 			o.trigger(new ns.Event('aftersync',{arguments:args}));		
@@ -57,6 +59,65 @@ nesis.mvc.Model = function(a,x){
 	
 	//Start Constructor
 	a.contentType = a.contentType || 'text/html';	
+	a.type = 'Model';	
+	
+	if(a.expires !== undefined){
+		a.expires = new Date(a.expires);
+		if(a.expires == 'Invalid Date') a.expires = new Date(0);
+	}
+	if(a.lastModified !== undefined){
+		a.lastModified = new Date(a.lastModified);
+		if(a.lastModified == 'Invalid Date'){
+			var now = new Date();
+			a.lastModified = new Date(now.getTime() + 86400000);
+		}
+	}
+	
+	ns.Node.call(o,a,{});
+	
+	o.append = undefined;
+	o.children = undefined;
+	o.find = undefined;
+	o.remove = undefined;
+
+	var pNode = o.parent();
+	if(pNode){
+		var tgt=document.getElementById(o.parent().attr('path')),clone,tNode;
+		if(tgt){  
+			clone = tgt.cloneNode(false);
+			clone.innerHTML = tgt.innerHTML;
+			tNode=document.createElement('div');
+			tNode.appendChild(clone);
+			a.data = tNode.innerHTML;
+		}
+	}
+	
+	cObj = {
+			data:a.data,		
+			url:a.url || ns.baseUrl,
+			persist:a.persist,
+			lastModified:a.lastModified,
+			expires:a.expires
+		};
+	
+	if(typeof o.onbeforesave  == 'function')
+		o.bind('beforesave',o.attr('onbeforesave'));
+	if(typeof o.onaftersave  == 'function')
+		o.bind('aftersave',o.attr('onaftersave'));
+	if(typeof o.onbeforesync  == 'function')
+		o.bind('beforesync',o.attr('onbeforesync'));			
+	if(typeof o.onaftersync  == 'function')
+		o.bind('aftersync',o.attr('onaftersync'));	
+	
+	ns.cache.set(cacheKey, cObj);
+};
+//Setup inheritance  
+nesis.mvc.Model.prototype = Object.create(nesis.mvc.Node.prototype);
+nesis.mvc.Model.constructor = nesis.mvc.Model;
+
+
+/* ORIGINAL CONSTRUCTOR 
+a.contentType = a.contentType || 'text/html';	
 	a.type = 'Model';
 	a.datasource = (a.url) ? ns.datasource.ajax : ns.datasource.dom;
 	
@@ -105,7 +166,5 @@ nesis.mvc.Model = function(a,x){
 	catch(err){			
 		nesis.core.error.handle(err);
 	};	
-};
-//Setup inheritance  
-nesis.mvc.Model.prototype = Object.create(nesis.mvc.Node.prototype);
-nesis.mvc.Model.constructor = nesis.mvc.Model;
+*/
+

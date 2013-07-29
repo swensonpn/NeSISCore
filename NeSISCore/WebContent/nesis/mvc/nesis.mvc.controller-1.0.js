@@ -1,8 +1,7 @@
-;nesis.mvc.Controller = function(k,v){
+nesis.mvc.Controller = function(k,v){
 	var ns=nesis.mvc,o=this,a={},x=[];
 	
-	
-	o.controller = function(k,v){
+	o.controller = function(k,v){ 
 		var c = o.children('id',k);
 		if(!v)
 			return (c instanceof Controller) ? c : null;
@@ -19,7 +18,7 @@
 		if(ns.debugTiming) console.log('execute: ' + o.attr('id'));
 		if(m instanceof ns.Model){rslt = m.sync(args);}
 		o.trigger(new ns.Event('afterexecute',{arguments:args}));
-//if need to use rslt to stop flow put in some kind of bubble event				
+		//if need to use rslt to stop flow put in some kind of bubble event				
 		o.children().each(function(){
 			if(this instanceof ns.Controller && this.attr('defaultNode'))
 				this.execute(args);
@@ -67,23 +66,41 @@
 	};
 	
 	//Start Constructor
+	a.id = k;
+	a.type = 'Controller';
+	a.path = k;
+	
+	if(v.parent){ 
+		a.path = v.parent.attr('path').split('.');
+		if(a.path.length == 3) a.path.splice(1,1);
+		a.path.push(k);
+		a.path = a.path.join('.');
+	}
+	
 	v.model = v.model || {};
 	v.view = v.view || {};
 	
 	for(var n in v){
-		if(n == 'model')x.push(o.model(v[n]));
-		else if(n == 'view')x.push(o.view(v[n]));
-		else if(n == 'subcontrollers' && typeof v[n] == 'object'){
-			for(var id in v[n]){x.push(o.controller(id,v[n][id]));}
-		} 
-		else a[n] = v[n];
+		if('modelviewsubcontrollers'.search(n) > -1)
+			x.push({type:n,data:v[n]});
+		else
+			a[n] = v[n];	
 	}
 	
-	a.id = k;
-	a.type = 'Controller';
-	a.path = (a.parent) ? a.parent.attr('path') + '/' + a.id : a.id;
+	ns.Node.call(o,a,[]);
 	
-	ns.Node.call(o,a,x);
+	for(var i=0,l=x.length; i<l; i++){
+		switch(x[i].type){
+		case 'model':
+			o.append(o.model(x[i].data));
+			break;
+		case 'view':
+			o.append(o.view(x[i].data));
+			break;
+		case 'subcontrollers': 
+			for(var n in x[i].data)o.append(o.controller(n,x[i].data[n]));
+		};
+	}
 };
 //Setup inheritance 
 nesis.mvc.Controller.prototype = Object.create(nesis.mvc.Node.prototype);

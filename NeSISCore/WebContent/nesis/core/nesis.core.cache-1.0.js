@@ -1,6 +1,6 @@
 nesis.core.cache = function(options){
 	var ns=nesis.core,o=this,lookup={},l1=[],
-		l2,l3,
+		l2=sessionStorage || {},l3=localStorage || {},
 		dflts={
 			l1Max:50,
 			l1Exp:30000,
@@ -18,12 +18,12 @@ nesis.core.cache = function(options){
 	};
 	
 	o.get = function(key,obj,refresh){ 
-		if(refresh){
+		if(refresh){				
 			obj.data = undefined;
 			return o.set(key,obj);
 		}
 		else{
-			//if(l1[key])return l1[key];
+			//if(l1[key])return l1[key];	
 			if(lookup[key]) return lookup[key];
 			if(l2[key])return JSON.parse(l2[key]);
 			if(l3[key]){
@@ -39,7 +39,7 @@ nesis.core.cache = function(options){
 	o.set = function(key,obj){ 
 		obj.key = key;
 		obj.stamp = new Date(); 
-		if(obj.datasource && !obj.data) obj = obj.datasource(obj);
+		if(obj.datasource && !obj.data) obj = obj.datasource(obj);		
 	
 		if(!obj.data) return obj;//non-blocking implementation		//Big fat trial and error
 		if(lookup[key]) l1[lookup[key]] = obj;
@@ -64,7 +64,7 @@ nesis.core.cache = function(options){
 		for(n in l2){
 			str += '\t' + n + ': ' + l2[n] + '\n';			
 		}
-		str += '}\nCache:l3{\n'
+		str += '}\nCache:l3{\n';
 		for(n in l3){
 			str += '\t' + n + ': ' + l3[n] + '\n';
 		}
@@ -73,8 +73,6 @@ nesis.core.cache = function(options){
 
 	//Start Constructor
 	for(var n in options){dflts[n]=options[n];}
-	l2=sessionStorage || {};
-	l3=localStorage || {};
 
 	//Garbage Collector
 	setInterval(function(){

@@ -29,38 +29,40 @@ nesis.mvc.View = function(a,x){
 	};
 	
 	o.render = function(args){
-		var cType,span=document.createElement('span'),pNode=o.parent(),model=o.model();
+		var m=o.model(),cType=m.attr('contentType'),div=document.createElement('div');
+						
+		switch(cType){
+		case "text/html":
+			div.innerHTML = args.data;
+			break;
+		case "text/xml":
+			div.innerHTML = "";//Future functionality
+			break;
+		case "application/json":
+			var tpl = (args.tpl) ? o.children('id',args.tpl) : o.children('defaultNode',true)[0];
+			if(tpl instanceof ns.Template) 
+				tpl = tpl.transform(args.data);	
+			if(tpl === false){
+				return false;
+			}
+			div.innerHTML = tpl;
+			break;
+		default:
+			try{throw Error("nesis.mvc." + o.attr('id') + ".render: ContentType " + model.attr('contentType') + " not supported");}
+			catch(err){nesis.core.error.handle(err);};
+		}
 		
-		frag = document.createDocumentFragment();
+		frag = document.createDocumentFragment();		
+		for(var i=0,l=div.children.length; i<l; i++){ 
+			frag.appendChild(div.children[i]);
+		}
 		
-		switch(model.attr('contentType')){
-			case "text/html":
-				span.innerHTML = args.data;
-				break;
-			case "text/xml":
-				span.innerHTML = '';
-				break;
-			case "text/json":	
-				var tpl = (args.tpl) ? o.children('id',args.tpl) : o.children('defaultNode',true)[0];
-				if(tpl instanceof ns.Template) 
-					tpl = tpl.transform(args.data);	
-				if(tpl === false){
-					return false;
-				}
-				span.innerHTML = tpl;
-				break;
-			default:
-				try{throw Error("nesis.mvc." + o.attr('id') + ".render: ContentType " + model.attr('contentType') + " not supported");}
-				catch(err){nesis.core.error.handle(err);};
-		
-		}		
-		frag.appendChild(span);
-	
 		var evt = new ns.Event('beforerender',{arguments:arguments});
 		o.trigger(evt);
+		
 		try{					
-			oNode = document.getElementById(pNode.attr('path'));
-			(oNode.firstChild)?oNode.replaceChild(frag,oNode.children[0]):oNode.appendChild(frag);
+			oNode = document.getElementById(o.parent().attr('path'));			
+			oNode.parentNode.replaceChild(frag,oNode);
 		}
 		catch(err){
 			err.message = "nesis.mvc." + o.attr('id') + ".render: document.getElementById('" + pNode.attr('path') + "') returned null";
@@ -107,4 +109,47 @@ nesis.mvc.View = function(a,x){
 //Setup inheritance 
 nesis.mvc.View.prototype = Object.create(nesis.mvc.Node.prototype);
 nesis.mvc.View.constructor = nesis.mvc.View;
+
+/* ORIGINAL RENDER
+		var cType,span=document.createElement('span'),pNode=o.parent(),model=o.model();
+		
+		frag = document.createDocumentFragment();
+		
+		switch(model.attr('contentType')){
+			case "text/html":
+				span.innerHTML = args.data;
+				break;
+			case "text/xml":
+				span.innerHTML = '';
+				break;
+			case "text/json":	
+				var tpl = (args.tpl) ? o.children('id',args.tpl) : o.children('defaultNode',true)[0];
+				if(tpl instanceof ns.Template) 
+					tpl = tpl.transform(args.data);	
+				if(tpl === false){
+					return false;
+				}
+				span.innerHTML = tpl;
+				break;
+			default:
+				try{throw Error("nesis.mvc." + o.attr('id') + ".render: ContentType " + model.attr('contentType') + " not supported");}
+				catch(err){nesis.core.error.handle(err);};
+		
+		}		
+		frag.appendChild(span);
+	
+		var evt = new ns.Event('beforerender',{arguments:arguments});
+		o.trigger(evt);
+		try{					
+			oNode = document.getElementById(pNode.attr('path'));
+			(oNode.firstChild)?oNode.replaceChild(frag,oNode.children[0]):oNode.appendChild(frag);
+		}
+		catch(err){
+			err.message = "nesis.mvc." + o.attr('id') + ".render: document.getElementById('" + pNode.attr('path') + "') returned null";
+			nesis.core.error.handle(err);
+		}
+		
+		frag = null;
+		o.trigger(new ns.Event('afterrender',{arguments:arguments}));
+*/
 

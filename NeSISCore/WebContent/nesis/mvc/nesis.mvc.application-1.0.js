@@ -1,18 +1,18 @@
-nesis.mvc.Application = function(v){
-	var ns=nesis.mvc,o=this,cfg=v.config || {};//r=new ns.Router();
-	
-	v.config = undefined;
+nesis.mvc.Application = function(appId,v){
+	var ns=nesis.mvc,o=this,rootNode='root',r=new ns.Router(),
+		addRoute=function(e){
+		 	if(e.target instanceof ns.Controller)
+		 		r.addRoute(e.target.attr('path'),'execute',e.target);
+		};
 	
 	//Start Constructor
-	nesis._init(cfg);
+	v.config = v.config || {};
+	v.oncreate = ns.fMerge(addRoute,v.oncreate) || addRoute;
+	nesis._init(v.config);
 	
-	ns.Controller.call(o,'app',v);
-	o.attr('router',new ns.Router());
+	ns.Controller.call(o,appId + '.' + rootNode,v);
+	o.attr('router',r);
 
-	o.attr('router').addRoute(o.attr('path'),'execute',o);
-	o.bind('create',function(e){
-		o.attr('router').addRoute(e.target.attr('path'),'execute',e.target);
-	});
 };
 //Setup inheritance 
 nesis.mvc.Application.prototype = Object.create(nesis.mvc.Controller.prototype);

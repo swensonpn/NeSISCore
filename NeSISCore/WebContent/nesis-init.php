@@ -34,5 +34,8 @@ echo "\t\tthis.mvc.ajaxReqCacheDelay = {$_SESSION['prefs']['mvc.ajaxReqCacheDela
 ?>		
 	},
 	core:{},
-	net:{}	
+	net:{},
+	application:function(appId,config){
+		return new this.mvc.Application(appId,config);
+	}
 };

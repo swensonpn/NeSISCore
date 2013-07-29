@@ -42,7 +42,11 @@ nesis.mvc = (function(){
 //	o.tpl = c.template.tmpl;
 	o.cache = new c.cache(); 
 	o.error = c.error;
+	o.baseUrl = url = [location.protocol, '//', location.host, location.pathname].join('');
 	
+	o.isUrl=function(s){
+		return /^((https?):\/\/)?(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/.test(s);
+	};
 	return o;	
 })();
 	

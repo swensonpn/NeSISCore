@@ -49,5 +49,8 @@ nesis = {
 		this.mvc.ajaxReqCacheDelay = opts.ajaxRetry || 2000;
 	},
 	core:{},
-	net:{}	
+	net:{},
+	application:function(appId,config){
+		return new this.mvc.Application(appId,config);
+	}
 };
