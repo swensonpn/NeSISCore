@@ -1,4 +1,3 @@
-//temp comment
 var nesis={
 	//name spaces
 	ds:{},
@@ -575,7 +574,7 @@ nesis.mvc.Router = function(defaultRoute){
 	
 	//Constructor
 	if(!history.pushState){
-		handler = hashBang;
+		handler = hashBang;		
 		window.addEventListener('hashchange',function(e){
 			var args = parseArgs(location.hash.substr(1)),
 				r = findRoute(args.path);
@@ -586,27 +585,30 @@ nesis.mvc.Router = function(defaultRoute){
 				r.scope[r.callback](args);		
 				o.trigger(new ns.Event('afterroute',{arguments:args}));
 			}				
-		},false);
+		},false);		
 	}
 	else{
 		handler = pushState;		
 		window.addEventListener('popstate',function(e){ 
-			var path,args={path:path,location:nesis.baseUrl};
+			var path,args={};
 			if(e.state && e.state.path){
 				path = e.state.path;  
 				args = e.state;
-			}			
-			var r = findRoute(path);		
+			}
+			else{
+				var op = (nesis.baseUrl.split('?').length == 1) ? '?' : '&';
+				path = dRoute;
+				args.path = path;
+				args.location = nesis.baseUrl + op + 'path=' + path;
+			}
+			var r = findRoute(path) || findRoute(dRoute);			
 			if(r){ 	
 				o.trigger(new ns.Event('beforeroute',{arguments:args}));
 				r.scope[r.callback](args);
 				o.trigger(new ns.Event('afterroute',{arguments:args}));
-			}
-			else{
-				var op = (nesis.baseUrl.split('?').length == 1) ? '?' : '&';
-				location.href = nesis.baseUrl + op + 'path=' +dRoute;
-			}
+			}			
 		},false);
+	
 	}
 	
 	
