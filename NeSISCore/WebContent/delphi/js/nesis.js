@@ -511,9 +511,20 @@ nesis.mvc.NodeCollection = function(x){
 nesis.mvc.Router = function(defaultRoute){ 
 	var ns=nesis.mvc,o=this,routes=[],handler,dRoute=defaultRoute,
 	hashBang = function(e,href){
-		console.log('hashband: ' + href);	
-		e.preventDefault();		
-		location.hash = '#' + href.split('?')[1];							
+		console.log('hashbang: ' + href);
+		var args,loc = href.split('?'),r;
+						
+		args = parseArgs(loc[1]); 
+		args.location = href;
+		
+		r = findRoute(args.path);
+		if(r){
+			e.preventDefault();
+			location.hash = '#' + encodeURIComponent(href.split('?')[1]);
+			o.trigger(new ns.Event('beforeroute',{arguments:args}));
+			r.scope[r.callback](args);
+			o.trigger(new ns.Event('afterroute',{arguments:args}));
+		}							
 	},
 	pushState = function(e,href){
 		console.log('pushstate: ' + href);
@@ -576,16 +587,25 @@ nesis.mvc.Router = function(defaultRoute){
 	if(!history.pushState){
 		handler = hashBang;		
 		window.addEventListener('hashchange',function(e){
-			var args = parseArgs(location.hash.substr(1)),
-				r = findRoute(args.path);
+			var qStr = decodeURIComponent(location.hash.substr(1)),args = parseArgs(qStr),r,
+				op = (nesis.baseUrl.split('?').length == 1) ? '?' : '&';
 			
+			if(!args.path){
+				args.path = dRoute;
+				args.location = nesis.baseUrl + op + 'path=' + dRoute;
+			}
+			else{
+				args.location = nesis.baseUrl + op + qStr;
+			}
+				
+			r = findRoute(args.path);
 			if(r){
 				e.preventDefault();	
 				o.trigger(new ns.Event('beforeroute',{arguments:args}));
 				r.scope[r.callback](args);		
 				o.trigger(new ns.Event('afterroute',{arguments:args}));
 			}				
-		},false);		
+		},false);	
 	}
 	else{
 		handler = pushState;		
